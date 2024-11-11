@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    .slider {
+        position: relative;
+        display: flex;
+        height: 300px;
+        width: 300px;
+    }
+
+    .nav-line {
+        width: 10px;
+        background-color: #f0f0f0;
+        position: relative;
+        margin-right: 20px;
+    }
+
+    .line {
+        width: 10px;
+        height: 25%;
+        background-color: #333;
+        position: absolute;
+        top: 0;
+        transition: top 0.4s ease;
+    }
+
+    .num {
+        position: absolute;
+        left: -12px;
+    }
+
+    .slides {
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .slide {
+        display: none;
+        height: 100%;
+        text-align: center;
+        font-size: 24px;
+        padding: 10px;
+        box-sizing: border-box;
+        color: #fff;
+        background-color: #666;
+    }
+
+    .slide.active {
+        display: block;
+    }
+</style>
+
+<body>
+    <div class="slider">
+        <div class="nav-line">
+            <div class="line">
+                <span class="num"></span>
+            </div>
+
+        </div>
+        <div class="slides">
+            <div class="slide active">Slide 1</div>
+            <div class="slide">Slide 2</div>
+            <div class="slide">Slide 3</div>
+            <div class="slide">Slide 4</div>
+            <div class="slide">Slide 5</div>
+            <div class="slide">Slide 6</div>
+        </div>
+    </div>
+    <button id="nextSlide">Next Slide</button>
+    <button id="prevSlide">Previous Slide</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            let currentSlide = 0;
+            const slides = $(".slide");
+            const slideCount = slides.length;
+
+            // Function to move to the next slide
+            function nextSlide() {
+                $(slides[currentSlide]).removeClass("active");
+                currentSlide = (currentSlide + 1) % slideCount;
+                $(slides[currentSlide]).addClass("active");
+                // let num = currentSlide + 1;
+
+
+
+                // Move the line
+                const linePosition = (100 / slideCount) * currentSlide;
+                let lineHeight = (100 / slideCount);
+                $(".line").css("height", `${lineHeight}%`);
+                $(".line").css("top", `${linePosition}%`);
+                $(".num").text(currentSlide + 1)
+            }
+
+            // move to previous slide
+            function prevSlide() {
+                $(slides[currentSlide]).removeClass("active");
+                currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+                $(slides[currentSlide]).addClass("active");
+
+                // Move the line
+                const linePosition = (100 / slideCount) * currentSlide;
+                $(".line").css("top", `${linePosition}%`);
+                $(".num").text(currentSlide + 1)
+            }
+
+
+            
+
+            setInterval(() => {
+                nextSlide()
+            }, 1500);
+
+            // Bind the nextSlide function to button click
+            // $("#nextSlide").on("click", nextSlide);
+
+            $("#prevSlide").on("click", prevSlide);
+        });
+
+    </script>
+</body>
+
+</html>
